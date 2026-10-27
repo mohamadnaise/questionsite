@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#100d22" />
+  <title>إلك، يا صديقتي ✨</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+
+    :root {
+      color-scheme: dark;
+      --bg: #100d22;
+      --text: #fff9ff;
+      --muted: #c8bdd6;
+      --pink: #ff8cc5;
+      --purple: #b69cff;
+      --line: rgba(255, 255, 255, .12);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      font-family: "Cairo", Tahoma, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .background {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 15%, #553565 0, transparent 30%),
+        radial-gradient(circle at 85% 80%, #343165 0, transparent 35%),
+        linear-gradient(145deg, #100d22, #1d1535 55%, #100d22);
+    }
+
+    .orb {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      filter: blur(65px);
+      opacity: .25;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+
+    .orb.one { background: #ff67ba; top: -100px; right: -80px; }
+    .orb.two {
+      background: #8669ff;
+      bottom: -120px;
+      left: -90px;
+      animation-delay: -5s;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle 3s ease-in-out infinite alternate;
+    }
+
+    .app {
+      width: min(100% - 32px, 720px);
+      min-height: 100svh;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 36px 0;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .brand {
+      color: #f7dcf0;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .05);
+      border-radius: 100px;
+      padding: 6px 13px;
+    }
+
+    .card {
+      position: relative;
+      min-height: 470px;
+      padding: clamp(26px, 6vw, 55px);
+      border: 1px solid rgba(255, 255, 255, .15);
+      border-radius: 32px;
+      background: linear-gradient(
+        145deg,
+        rgba(255, 255, 255, .105),
+        rgba(255, 255, 255, .035)
+      );
+      box-shadow: 0 25px 90px rgba(0, 0, 0, .25);
+      backdrop-filter: blur(18px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 15%;
+      left: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffb6de, transparent);
+      opacity: .8;
+    }
+
+    .screen { animation: enter .55s both; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffb8dc;
+      font-size: .84rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .icon {
+      width: 68px;
+      height: 68px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      font-size: 2rem;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid var(--line);
+      margin-bottom: 20px;
+      animation: bob 3s ease-in-out infinite;
+    }
+
+    h1, h2 {
+      margin: 0 0 13px;
+      line-height: 1.5;
+      letter-spacing: -.03em;
+    }
+
+    h1 { font-size: clamp(2rem, 7vw, 3.3rem); }
+    h2 { font-size: clamp(1.55rem, 5vw, 2.35rem); }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #ffacd7, #e1c5ff, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 2;
+      font-size: 1rem;
+    }
+
+    .intro-text { max-width: 500px; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+      align-items: center;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 16px;
+      padding: 14px 24px;
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform .2s, box-shadow .2s, background .2s;
+    }
+
+    .btn:hover { transform: translateY(-3px); }
+    .btn:active { transform: scale(.97); }
+    .btn:focus-visible, input:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 4px;
+    }
+
+    .btn-primary {
+      color: #241229;
+      background: linear-gradient(120deg, #ffa8d6, #c6adff);
+      box-shadow: 0 10px 30px rgba(220, 143, 242, .23);
+    }
+
+    .btn-secondary {
+      color: white;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .07);
+    }
+
+    .btn-secondary:hover { background: rgba(255, 255, 255, .13); }
+
+    .progress-wrap { margin-bottom: 32px; }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .78rem;
+      margin-bottom: 10px;
+    }
+
+    .progress {
+      height: 5px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .1);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #bb9cff, #ff92c8);
+      transition: width .5s ease;
+    }
+
+    .answers {
+      display: grid;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .answer {
+      width: 100%;
+      text-align: right;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      background: rgba(255, 255, 255, .055);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 16px;
+      padding: 14px 17px;
+      cursor: pointer;
+      transition: background .2s, border-color .2s, transform .2s;
+      font-weight: 700;
+    }
+
+    .answer:hover {
+      background: rgba(255, 170, 215, .12);
+      border-color: rgba(255, 170, 215, .45);
+      transform: translateX(-4px);
+    }
+
+    .answer:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+    .answer span:last-child { color: #ffafd7; }
+
+    .hint {
+      min-height: 28px;
+      margin-top: 14px;
+      color: #ffbadf;
+      font-size: .85rem;
+    }
+
+    .reaction {
+      margin-top: 22px;
+      padding: 15px 18px;
+      border: 1px solid rgba(255, 171, 219, .2);
+      border-radius: 16px;
+      background: rgba(255, 171, 219, .08);
+      color: #ffe5f4;
+      animation: enter .35s both;
+    }
+
+    .range-box { margin-top: 30px; }
+    .rating {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #ffc0e2;
+      text-align: center;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #ff9ed1;
+      cursor: pointer;
+    }
+
+    .range-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .8rem;
+    }
+
+    .letter {
+      margin-top: 25px;
+      padding: 22px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--line);
+    }
+
+    .letter p { color: #f4e8f4; }
+    .signature { margin-top: 15px; color: #ffb8dc; font-weight: 800; }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      color: #a99bb8;
+      font-size: .78rem;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      z-index: 5;
+      pointer-events: none;
+      animation: fall linear forwards;
+    }
+
+    @keyframes enter {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      to { transform: translate(60px, 70px) scale(1.2); }
+    }
+
+    @keyframes bob {
+      50% { transform: translateY(-7px) rotate(5deg); }
+    }
+
+    @keyframes twinkle {
+      from { opacity: .15; transform: scale(.7); }
+      to { opacity: .8; transform: scale(1.3); }
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(600deg); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .card { min-height: 500px; border-radius: 26px; }
+      .btn { padding: 13px 19px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="background" aria-hidden="true">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+  </div>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+
+  <main class="app">
+    <div class="topbar">
+      <span class="brand">✦ مساحة صغيرة إلنا</span>
+      <span class="badge">صُنع بكل المحبة ♡</span>
+    </div>
+
+    <section class="card">
+      <div id="content" aria-live="polite"></div>
+    </section>
+
+    <div class="footer">ملاحظة: هالموقع فيه شوية مزح… وكتير تقدير ✨</div>
+  </main>
+
+  <script>
+    // عدّل اسم صديقتك هون إذا بتحب.
+    const friendName = "مرووم";
+
+    // عدّل الرسالة النهائية لتكون من قلبك وبأسلوبك.
+    const finalMessage = `
+      بعرف إني بمزح كتير، بس في شغلة عن جد بدي قلك ياها:
+      وجودك بحياتي من الأشياء اللي بقدّرها كتير.
+      شكراً على الضحك، والحكي، وكل مرة كنتِ فيها صديقة حقيقية.
+      بتمنى نضل نجمع ذكريات حلوة ونضحك على قصصنا لوقت طويل 💜
+    `;
+
+    // فيك تغيّر الأسئلة والأجوبة أو تضيف أسئلة بنفس الشكل.
+    const questions = [
+      {
+        icon: "💫",
+        title: "أول سؤال وبكل صراحة…",
+        subtitle: "بتحبي رفقتنا؟",
+        playful: true,
+        answers: [
+          { text: "أكيد بحبها 💖", reaction: "هيك الجواب اللي بيرفع المعنويات! ✨" },
+          { text: "لا 🙃", reaction: "حتى لو كبستِ لا… أنا بقدّر صراحتك 😄" }
+        ]
+      },
+      {
+        icon: "😂",
+        title: "مين أظرف واحد فينا؟",
+        subtitle: "انتبهي… جوابك رح ينحفظ بقلبي، مو بس بالموقع.",
+        answers: [
+          { text: "أنا طبعاً 😌", reaction: "ثقة بالنفس! رح اسمحلك بهالمرة 😂" },
+          { text: "إنت طبعاً 😎", reaction: "أخيراً حدا اعترف بالحقيقة العظيمة!" },
+          { text: "نحنا التنين 🤝", reaction: "جواب دبلوماسي… بس مقبول!" }
+        ]
+      },
+      {
+        icon: "🕰️",
+        title: "بتتذكري أول مرة  فيها؟",
+        subtitle: "فكّري شوي… كانت بداية قصة صداقة حلوة.",
+        answers: [
+          { text: "أكيد بتذكر! ✨", reaction: "يا سلام! حلو إنو أول لحظة بعدها بالبال." },
+          { text: "بدي شوية مساعدة 😅", reaction: "ولا يهمك، المهم الذكريات الحلوة اللي إجت بعدها!" }
+        ]
+      },
+      {
+        icon: "☕",
+        title: "لو معنا يوم فاضي سوا…",
+        subtitle: "شو أول شي بتختاري نعمله؟",
+        answers: [
+          { text: "قعدة وحكي ما بيخلص ☕", reaction: "والحكي رح يبدأ بموضوع وينتهي بعشرة مواضيع 😂" },
+          { text: "نطلع مغامرة عشوائية 🚗", reaction: "أحلى الخطط هي اللي بتبلّش بـ«يلا منشوف»!" },
+          { text: "أكل… وبعدين منفكر 🍕", reaction: "أخيراً حدا عنده أولويات مرتبة!" }
+        ]
+      },
+      {
+        icon: "💬",
+        title: "إذا صار معك موقف غريب…",
+        subtitle: "قديش احتمال تبعتيلي تخبريني؟",
+        answers: [
+          { text: "فوراً، ما فيني استنى 😂", reaction: "هيك بدي! التفاصيل كاملة لو سمحتِ." },
+          { text: "بعد ما أستوعب شو صار 🤯", reaction: "خدي وقتك، بس لا تنسي القصة!" },
+          { text: "حسب مستوى الفضيحة 🙈", reaction: "مفهوم… الأسرار محفوظة هون 🤐" }
+        ]
+      },
+      {
+        icon: "🫶",
+        title: "وقت يكون يومك مو حلو…",
+        subtitle: "شو بتحبي أكتر من رفيقك؟",
+        answers: [
+          { text: "يسمعني وبس 🤍", reaction: "أحياناً وجود حدا يسمع هو كل اللي منحتاجه." },
+          { text: "يحاول يضحكني 😂", reaction: "نكت بايخة تحت الطلب، بأي وقت!" },
+          { text: "يعطيني مساحة ويفهمني 🌙", reaction: "المساحة كمان شكل من أشكال الاهتمام." }
+        ]
+      },
+      {
+        icon: "📸",
+        title: "أحلى شي بذكرياتنا شو هو؟",
+        subtitle: "كل جواب من هدول إله مكانة خاصة.",
+        answers: [
+          { text: "الضحك على أتفه الأشياء 😭", reaction: "خصوصاً لما نضحك وما حدا غيرنا يفهم السبب!" },
+          { text: "الحكي الصريح من القلب 💜", reaction: "الحكي اللي من دون تكلّف… هاد كنز." },
+          { text: "المواقف العفوية والمفاجآت ✨", reaction: "اللحظات اللي ما خططنالها بتطلع أحلى ذكريات." }
+        ]
+      },
+      {
+        icon: "🌟",
+        title: "قديش بتقيّمي صداقتنا؟",
+        subtitle: "حرّكي المؤشر واختاري الرقم بكل صراحة.",
+        type: "rating"
+      },
+      {
+        icon: "🤝",
+        title: "منضل نعمل ذكريات جديدة؟",
+        subtitle: "لسّا في قصص كتيرة ما عشناها.",
+        answers: [
+          { text: "أكيد، ولسّا الجاي أحلى ✨", reaction: "اتفقنا! خلي الأيام الحلوة تبلّش." },
+          { text: "إذا بطّلت نكتك البايخة 😏", reaction: "شرط صعب… بس رح حاول، يمكن 😂" },
+          { text: "خلينا نشوف شو بتخبّي الأيام 🌸", reaction: "مهما صار، الذكريات الحلوة بتضل حلوة." }
+        ]
+      },
+      {
+        icon: "🎁",
+        title: "آخر سؤال… جاهزة للمفاجأة؟",
+        subtitle: "في رسالة صغيرة مستنيتك بالنهاية.",
+        playful: true,
+        answers: [
+          { text: "جاهزة! ورجيني 💌", reaction: "خلص، وصلنا لأهم جزء…" },
+          { text: "لسّا لا 😅", reaction: "خدي نفس… والمفاجأة رح تكون ناطرتك." }
+        ]
+      }
+    ];
+
+    const content = document.getElementById("content");
+    let current = 0;
+    let teasingCount = 0;
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function makeStars() {
+      const container = document.getElementById("stars");
+      for (let i = 0; i < 45; i++) {
+        const star = document.createElement("span");
+        star.className = "star";
+        star.style.left = Math.random() * 100 + "%";
+        star.style.top = Math.random() * 100 + "%";
+        star.style.animationDelay = Math.random() * 3 + "s";
+        container.appendChild(star);
+      }
+    }
+
+    function showWelcome() {
+      content.innerHTML = `
+        <div class="screen">
+          <div class="icon">💌</div>
+          <div class="eyebrow">✦ في شي صغير معمول خصيصاً إلك</div>
+          <h1>أهلاً <span class="gradient-text">${escapeHTML(friendName)}</span> ✨</h1>
+          <p class="intro-text">
+            عندي إلك كم سؤال عن صداقتنا… في منهم جدي، وفي منهم
+            مش مضمون أبداً 😌 جاهزة لرحلة صغيرة؟
+          </p>
+          <div class="actions">
+            <button class="btn btn-primary" id="start">يلا نبلّش ←</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("start").addEventListener("click", () => {
+        current = 0;
+        showQuestion();
+      });
+    }
+
+    function showQuestion() {
+      teasingCount = 0;
+      const q = questions[current];
+      const progress = ((current + 1) / questions.length) * 100;
+
+      let answerHTML = "";
+
+      if (q.type === "rating") {
+        answerHTML = `
+          <div class="range-box">
+            <div class="rating"><span id="ratingValue">8</span><small>/10</small></div>
+            <input id="rating" type="range" min="1" max="10" value="8"
+              aria-label="تقييم الصداقة من واحد إلى عشرة">
+            <div class="range-labels"><span>١</span><span>١٠ ✨</span></div>
+            <div class="actions">
+              <button class="btn btn-primary" id="submitRating">اعتمدي التقييم ←</button>
+            </div>
+          </div>
+        `;
+      } else {
+        answerHTML = `
+          <div class="answers">
+            ${q.answers.map((answer, index) => `
+              <button class="answer" data-index="${index}">
+                <span>${escapeHTML(answer.text)}</span><span>←</span>
+              </button>
+            `).join("")}
+          </div>
+          <div class="hint" id="hint" aria-live="polite"></div>
+        `;
+      }
+
+      content.innerHTML = `
+        <div class="screen">
+          <div class="progress-wrap">
+            <div class="progress-label">
+              <span>رحلتنا الصغيرة ✨</span>
+              <span>${current + 1} / ${questions.length}</span>
+            </div>
+            <div class="progress" role="progressbar"
+              aria-valuemin="0" aria-valuemax="${questions.length}"
+              aria-valuenow="${current + 1}" aria-label="التقدم">
+              <div class="progress-fill" style="width:${progress}%"></div>
+            </div>
+          </div>
+          <div class="icon">${q.icon}</div>
+          <div class="eyebrow">السؤال ${current + 1} ✦</div>
+          <h2>${escapeHTML(q.title)}</h2>
+          <p>${escapeHTML(q.subtitle)}</p>
+          ${answerHTML}
+          <div id="reactionArea"></div>
+        </div>
+      `;
+
+      if (q.type === "rating") {
+        const slider = document.getElementById("rating");
+        const value = document.getElementById("ratingValue");
+
+        slider.addEventListener("input", () => {
+          value.textContent = slider.value;
+        });
+
+        document.getElementById("submitRating").addEventListener("click", () => {
+          const score = Number(slider.value);
+          if (score === 10) celebrate();
+          showReaction(
+            score === 10
+              ? "١٠ من ١٠؟ هيك رح أطير من الفرحة! 🎉"
+              : `تقييم ${score} من ١٠! شكراً لصراحتك، ولسّا في ذكريات حلوة نعملها ✨`
+          );
+        });
+      } else {
+        document.querySelectorAll(".answer").forEach(button => {
+          button.addEventListener("click", () => {
+            const index = Number(button.dataset.index);
+
+            // مزحة محدودة: بعد محاولتين، زر «لا» بيشتغل بشكل طبيعي.
+            if (q.playful && index === 1 && teasingCount < 2) {
+              teasingCount++;
+              const first = document.querySelector(".answer");
+              first.style.background = "rgba(255, 170, 215, .18)";
+              first.style.padding = teasingCount === 1 ? "18px 20px" : "22px 22px";
+              document.getElementById("hint").textContent =
+                teasingCount === 1
+                  ? "هممم… متأكدة؟ الزر التاني شكله مقتنع أكتر 😏"
+                  : "آخر محاولة مزح، بوعدك! اختاري اللي بدك ياه 😂";
+              return;
+            }
+
+            showReaction(q.answers[index].reaction);
+          });
+        });
+      }
+    }
+
+    function showReaction(message) {
+      const area = document.getElementById("reactionArea");
+      const controls = content.querySelector(".answers, .range-box");
+      if (controls) controls.remove();
+
+      const hint = document.getElementById("hint");
+      if (hint) hint.remove();
+
+      area.innerHTML = `
+        <div class="reaction">${escapeHTML(message)}</div>
+        <div class="actions">
+          <button class="btn btn-primary" id="next">
+            ${current === questions.length - 1 ? "افتحي المفاجأة 🎁" : "السؤال اللي بعده ←"}
+          </button>
+        </div>
+      `;
+
+      const nextButton = document.getElementById("next");
+      nextButton.focus();
+      nextButton.addEventListener("click", () => {
+        current++;
+        if (current < questions.length) showQuestion();
+        else showFinal();
+      });
+    }
+
+    function showFinal() {
+      content.innerHTML = `
+        <div class="screen">
+          <div class="icon">💖</div>
+          <div class="eyebrow">✦ وصلنا للنهاية… أو يمكن للبداية</div>
+          <h2>رسالة صغيرة <span class="gradient-text">إلك</span></h2>
+          <p>بعيداً عن الأسئلة والمزح، في كلام حابب قلك ياه:</p>
+          <div class="letter">
+            <p>${escapeHTML(finalMessage)}</p>
+            <div class="signature">من رفيقك، بكل صدق بتعرفيني ابكذب ♡</div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-secondary" id="restart">نرجع من الأول ↻</button>
+          </div>
+        </div>
+      `;
+      document.getElementById("restart").addEventListener("click", showWelcome);
+      celebrate();
+    }
+
+    function celebrate() {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const colors = ["#ff9ed1", "#c3aaff", "#fff0b8", "#ffffff", "#a8e6df"];
+
+      for (let i = 0; i < 65; i++) {
+        const piece = document.createElement("span");
+        piece.className = "confetti";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.width = 5 + Math.random() * 7 + "px";
+        piece.style.height = 8 + Math.random() * 10 + "px";
+        piece.style.borderRadius = Math.random() > .5 ? "50%" : "2px";
+        piece.style.animationDuration = 2 + Math.random() * 3 + "s";
+        piece.style.animationDelay = Math.random() * .5 + "s";
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 6000);
+      }
+    }
+
+    makeStars();
+    showWelcome();
+  </script>
+</body>
+</html>
